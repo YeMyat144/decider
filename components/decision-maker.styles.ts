@@ -93,18 +93,43 @@ scrollIndicatorText: {
     marginBottom: 10,
     fontWeight: 'bold',
   },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+  lottieBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1, 
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.3)', 
+  },
+  fullScreenLottie: {
+    width: '100%',
+    height: '100%',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    zIndex: 2, // Above the Lottie background
   },
   modalContent: {
     backgroundColor: 'white',
+    borderRadius: 20,
     padding: 25,
-    borderRadius: 15,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
     width: '80%',
+    maxWidth: 400,
   },
   modalTitle: {
     fontSize: 24,
@@ -140,5 +165,6 @@ scrollIndicatorText: {
     minWidth: 120,
     margin: 4,
     borderRadius: 18,
-  }
+  },
+  
 })

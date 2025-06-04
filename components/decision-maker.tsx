@@ -1,4 +1,5 @@
 "use client"
+import LottieView from "lottie-react-native"
 import { useState } from "react"
 import { Dimensions, Keyboard, Modal, ScrollView, Share, Text, TextInput, View } from "react-native"
 import * as Animatable from "react-native-animatable"
@@ -16,12 +17,12 @@ export default function DecisionMaker() {
   // Option state
   const [options, setOptions] = useState<Option[]>([])
   const [newOption, setNewOption] = useState("")
-  const [loadingOptions, setLoadingOptions] = useState(false)
 
   // Decision state
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [isSpinning, setIsSpinning] = useState(false)
   const [showResult, setShowResult] = useState(false)
+  const [showLottie, setShowLottie] = useState(false)
 
   const handleAddOption = () => {
     if (newOption.trim() === "") return
@@ -50,7 +51,13 @@ export default function DecisionMaker() {
   const handleSpinComplete = (selectedOptionText: string) => {
     setSelectedOption(selectedOptionText)
     setIsSpinning(false)
+    setShowLottie(true)
     setShowResult(true)
+    
+    // Hide Lottie after animation duration
+    setTimeout(() => {
+      setShowLottie(false)
+    }, 2000) // Adjust this duration to match your Lottie animation length
   }
 
   const handleShare = async () => {
@@ -67,9 +74,20 @@ export default function DecisionMaker() {
 
   return (
     <View style={[styles.container, { padding: 24, paddingTop: 60 }]}>
-        <Animatable.Text animation="fadeInDown" style={styles.appTitle}>
-          🍥 The Decider
-        </Animatable.Text>
+      {showLottie && (
+        <View style={styles.lottieBackground}>
+          <LottieView
+            source={require('@/assets/lottie.json')}
+            autoPlay
+            loop={false}
+            style={styles.fullScreenLottie}
+          />
+        </View>
+      )}
+
+      <Animatable.Text animation="fadeInDown" style={styles.appTitle}>
+        🍥 The Decider
+      </Animatable.Text>
 
         {/* Options Input */}
         <Animatable.View animation="fadeInUp" duration={500}>
@@ -93,59 +111,59 @@ export default function DecisionMaker() {
         </Animatable.View>
 
         {/* Options List */}
-<View style={styles.optionsSection}>
-  <View style={styles.optionsHeader}>
-    <Text style={styles.sectionTitle}>Your Options</Text>
-    {options.length > 0 && (
-      <Button mode="text" onPress={() => setOptions([])} icon="delete-outline" compact textColor="#ff7f50">
-        Clear All
-      </Button>
-    )}
-  </View>
+        <View style={styles.optionsSection}>
+          <View style={styles.optionsHeader}>
+            <Text style={styles.sectionTitle}>Your Options</Text>
+            {options.length > 0 && (
+              <Button mode="text" onPress={() => setOptions([])} icon="delete-outline" compact textColor="#ff7f50">
+                Clear All
+              </Button>
+            )}
+          </View>
 
-  {options.length === 0 ? (
-    <Animatable.Text animation="fadeIn" style={styles.emptyOptionsText}>
-      No options added yet.
-    </Animatable.Text>
-  ) : (
-    <View style={styles.scrollContainer}>
-      <ScrollView 
-        style={styles.optionsList}
-        showsVerticalScrollIndicator={false}
-      >
-        <Animatable.View animation="fadeInUp" delay={200}>
-          <List.Section>
-            {options.map((option) => (
-              <List.Item
-                key={option.id}
-                title={option.text}
-                titleStyle={styles.optionText}
-                right={() => (
-                  <IconButton
-                    icon="close-circle-outline"
-                    size={22}
-                    onPress={() => handleRemoveOption(option.id)}
-                    iconColor="#808080"
-                  />
-                )}
-              />
-            ))}
-          </List.Section>
-        </Animatable.View>
-      </ScrollView>
-      {options.length > 2 && (
-        <Animatable.View 
-          animation="fadeIn"
-          iterationCount="infinite"
-          direction="alternate"
-          style={styles.scrollIndicator}
-        >
-          <Text style={styles.scrollIndicatorText}>↓ Scroll ↓</Text>
-        </Animatable.View>
-      )}
-    </View>
-  )}
-</View>
+          {options.length === 0 ? (
+            <Animatable.Text animation="fadeIn" style={styles.emptyOptionsText}>
+              No options added yet.
+            </Animatable.Text>
+          ) : (
+            <View style={styles.scrollContainer}>
+              <ScrollView 
+                style={styles.optionsList}
+                showsVerticalScrollIndicator={false}
+              >
+                <Animatable.View animation="fadeInUp" delay={200}>
+                  <List.Section>
+                    {options.map((option) => (
+                      <List.Item
+                        key={option.id}
+                        title={option.text}
+                        titleStyle={styles.optionText}
+                        right={() => (
+                          <IconButton
+                            icon="close-circle-outline"
+                            size={22}
+                            onPress={() => handleRemoveOption(option.id)}
+                            iconColor="#808080"
+                          />
+                        )}
+                      />
+                    ))}
+                  </List.Section>
+                </Animatable.View>
+              </ScrollView>
+              {options.length > 2 && (
+                <Animatable.View 
+                  animation="fadeIn"
+                  iterationCount="infinite"
+                  direction="alternate"
+                  style={styles.scrollIndicator}
+                >
+                  <Text style={styles.scrollIndicatorText}>↓ Scroll ↓</Text>
+                </Animatable.View>
+              )}
+            </View>
+          )}
+        </View>
 
         {/* Spinning Wheel */}
         {options.length >= 2 && (
@@ -164,43 +182,42 @@ export default function DecisionMaker() {
         )}
 
         {/* Result Modal */}
-        <Modal
-          visible={showResult}
-          transparent={true}
-          animationType="fade"
-          onRequestClose={() => setShowResult(false)}
-        >
-          <View style={styles.modalOverlay}>
-            <Animatable.View 
-              animation="bounceIn" 
-              duration={600}
-              style={styles.modalContent}
-            >
-              <Text style={styles.modalTitle}>Result</Text>
-              <Text style={styles.modalResultText}>{selectedOption}</Text>
-<View style={styles.modalButtonContainer}>
-  <Button
-    mode="contained"
-    onPress={handleShare}
-    style={styles.modalButtonResponsive}
-    labelStyle={styles.modalButtonLabel}
-    icon="share"
-  >
-    Share
-  </Button>
-  <Button
-    mode="contained"
-    onPress={() => setShowResult(false)}
-    style={styles.modalButtonResponsive}
-    labelStyle={styles.modalButtonLabel}
-  >
-    Close
-  </Button>
-</View>
-
-            </Animatable.View>
-          </View>
-        </Modal>
+      <Modal
+        visible={showResult}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowResult(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <Animatable.View 
+            animation="bounceIn" 
+            duration={600}
+            style={styles.modalContent}
+          >
+            <Text style={styles.modalTitle}>Result</Text>
+            <Text style={styles.modalResultText}>{selectedOption}</Text>
+            <View style={styles.modalButtonContainer}>
+              <Button
+                mode="contained"
+                onPress={handleShare}
+                style={styles.modalButtonResponsive}
+                labelStyle={styles.modalButtonLabel}
+                icon="share"
+              >
+                Share
+              </Button>
+              <Button
+                mode="contained"
+                onPress={() => setShowResult(false)}
+                style={styles.modalButtonResponsive}
+                labelStyle={styles.modalButtonLabel}
+              >
+                Close
+              </Button>
+            </View>
+          </Animatable.View>
+        </View>
+      </Modal>
     </View>
   )
 }
