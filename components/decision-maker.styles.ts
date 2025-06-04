@@ -1,5 +1,5 @@
 // decision-maker.styles.ts
-import { StyleSheet, Dimensions } from "react-native"
+import { Dimensions, StyleSheet } from "react-native"
 
 const screenHeight = Dimensions.get("window").height
 
@@ -129,4 +129,16 @@ scrollIndicatorText: {
     fontSize: 16,
     color: "#fff",
   },
+    modalButtonContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    marginTop: 16,
+  },
+  modalButtonResponsive: {
+    flex: 1,
+    minWidth: 120,
+    margin: 4,
+    borderRadius: 18,
+  }
 })

@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import { Dimensions, Keyboard, Modal, ScrollView, Text, TextInput, View } from "react-native"
+import { Dimensions, Keyboard, Modal, ScrollView, Share, Text, TextInput, View } from "react-native"
 import * as Animatable from "react-native-animatable"
 import { Button, IconButton, List } from "react-native-paper"
 import { styles } from "./decision-maker.styles"
@@ -52,6 +52,18 @@ export default function DecisionMaker() {
     setIsSpinning(false)
     setShowResult(true)
   }
+
+  const handleShare = async () => {
+    try {
+      const message = `The Decider chose: ${selectedOption} 🍥`;
+      await Share.share({
+        message,
+        title: 'My Decision from The Decider',
+      });
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  };
 
   return (
     <View style={[styles.container, { padding: 24, paddingTop: 60 }]}>
@@ -166,14 +178,26 @@ export default function DecisionMaker() {
             >
               <Text style={styles.modalTitle}>Result</Text>
               <Text style={styles.modalResultText}>{selectedOption}</Text>
-              <Button
-                mode="contained"
-                onPress={() => setShowResult(false)}
-                style={styles.modalButton}
-                labelStyle={styles.modalButtonLabel}
-              >
-                Close
-              </Button>
+<View style={styles.modalButtonContainer}>
+  <Button
+    mode="contained"
+    onPress={handleShare}
+    style={styles.modalButtonResponsive}
+    labelStyle={styles.modalButtonLabel}
+    icon="share"
+  >
+    Share
+  </Button>
+  <Button
+    mode="contained"
+    onPress={() => setShowResult(false)}
+    style={styles.modalButtonResponsive}
+    labelStyle={styles.modalButtonLabel}
+  >
+    Close
+  </Button>
+</View>
+
             </Animatable.View>
           </View>
         </Modal>
