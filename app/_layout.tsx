@@ -1,8 +1,9 @@
 "use client"
 
-import * as React from "react"
-import { Provider as PaperProvider, DefaultTheme } from "react-native-paper"
 import DecisionMaker from "@/components/decision-maker"
+import * as React from "react"
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper"
 
 const theme = {
   ...DefaultTheme,
@@ -15,8 +16,10 @@ const theme = {
 
 export default function Home() {
   return (
-    <PaperProvider theme={theme}>
-      <DecisionMaker />
-    </PaperProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <PaperProvider theme={theme}>
+        <DecisionMaker />
+      </PaperProvider>
+    </GestureHandlerRootView>
   )
 }

@@ -29,22 +29,22 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
   },
   scrollContainer: {
-  position: 'relative',
-},
-scrollIndicator: {
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  right: 0,
-  paddingVertical: 8,
-  backgroundColor: 'rgba(245, 247, 250, 0.8)',
-  alignItems: 'center',
-},
-scrollIndicatorText: {
-  color: '#808080',
-  fontSize: 10,
-  fontWeight: 'bold',
-},
+    position: 'relative',
+  },
+  scrollIndicator: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingVertical: 8,
+    backgroundColor: 'rgba(245, 247, 250, 0.8)',
+    alignItems: 'center',
+  },
+  scrollIndicatorText: {
+    color: '#808080',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
   optionInput: {
     flex: 1,
     borderWidth: 1,
@@ -63,6 +63,11 @@ scrollIndicatorText: {
   optionsHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  headerButtons: {
+    flexDirection: "row",
     alignItems: "center",
   },
   sectionTitle: {
@@ -113,7 +118,7 @@ scrollIndicatorText: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
-    zIndex: 2, // Above the Lottie background
+    zIndex: 2,
   },
   modalContent: {
     backgroundColor: 'white',
@@ -128,7 +133,7 @@ scrollIndicatorText: {
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: '80%',
+    width: '90%',
     maxWidth: 400,
   },
   modalTitle: {
@@ -149,12 +154,13 @@ scrollIndicatorText: {
     backgroundColor: "#008080",
     paddingVertical: 5,
     width: '100%',
+    marginTop: 16,
   },
   modalButtonLabel: {
     fontSize: 16,
     color: "#fff",
   },
-    modalButtonContainer: {
+  modalButtonContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
@@ -166,5 +172,4 @@ scrollIndicatorText: {
     margin: 4,
     borderRadius: 18,
   },
-  
 })

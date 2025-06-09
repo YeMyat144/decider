@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Dimensions, Keyboard, Modal, ScrollView, Share, Text, TextInput, View } from "react-native"
 import * as Animatable from "react-native-animatable"
 import { Button, IconButton, List } from "react-native-paper"
+import CategoryManager from "./category-manager"
 import { styles } from "./decision-maker.styles"
 import SpinningWheel from "./spinning-wheel"
 
@@ -17,6 +18,7 @@ export default function DecisionMaker() {
   // Option state
   const [options, setOptions] = useState<Option[]>([])
   const [newOption, setNewOption] = useState("")
+  const [showCategories, setShowCategories] = useState(false)
 
   // Decision state
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
@@ -54,23 +56,31 @@ export default function DecisionMaker() {
     setShowLottie(true)
     setShowResult(true)
     
-    // Hide Lottie after animation duration
     setTimeout(() => {
       setShowLottie(false)
-    }, 2000) // Adjust this duration to match your Lottie animation length
+    }, 2000)
   }
 
   const handleShare = async () => {
     try {
-      const message = `The Decider chose: ${selectedOption} 🍥`;
+      const message = `The Decider chose: ${selectedOption} 🍥`
       await Share.share({
         message,
         title: 'My Decision from The Decider',
-      });
+      })
     } catch (error) {
-      console.error('Error sharing:', error);
+      console.error('Error sharing:', error)
     }
-  };
+  }
+
+  const handleCategorySelect = (category: { options: string[] }) => {
+    const newOptions = category.options.map((text, index) => ({
+      id: Date.now() + index,
+      text
+    }))
+    setOptions(newOptions)
+    setShowCategories(false)
+  }
 
   return (
     <View style={[styles.container, { padding: 24, paddingTop: 60 }]}>
@@ -89,99 +99,108 @@ export default function DecisionMaker() {
         🍥 The Decider
       </Animatable.Text>
 
-        {/* Options Input */}
-        <Animatable.View animation="fadeInUp" duration={500}>
-          <View style={styles.optionInputContainer}>
-            <TextInput
-              placeholder="Enter an option..."
-              placeholderTextColor="#808080"
-              value={newOption}
-              onChangeText={setNewOption}
-              onSubmitEditing={handleAddOption}
-              style={styles.optionInput}
-            />
-            <IconButton
-              icon="plus-circle"
-              onPress={handleAddOption}
-              disabled={newOption.trim() === ""}
-              size={30}
-              iconColor="#ff7f50"
-            />
-          </View>
-        </Animatable.View>
+      <Animatable.View animation="fadeInUp" duration={500}>
+        <View style={styles.optionInputContainer}>
+          <TextInput
+            placeholder="Enter an option..."
+            placeholderTextColor="#808080"
+            value={newOption}
+            onChangeText={setNewOption}
+            onSubmitEditing={handleAddOption}
+            style={styles.optionInput}
+          />
+          <IconButton
+            icon="plus-circle"
+            onPress={handleAddOption}
+            disabled={newOption.trim() === ""}
+            size={30}
+            iconColor="#ff7f50"
+          />
+        </View>
+      </Animatable.View>
 
-        {/* Options List */}
-        <View style={styles.optionsSection}>
-          <View style={styles.optionsHeader}>
-            <Text style={styles.sectionTitle}>Your Options</Text>
-            {options.length > 0 && (
-              <Button mode="text" onPress={() => setOptions([])} icon="delete-outline" compact textColor="#ff7f50">
-                Clear All
-              </Button>
-            )}
-          </View>
-
-          {options.length === 0 ? (
-            <Animatable.Text animation="fadeIn" style={styles.emptyOptionsText}>
-              No options added yet.
-            </Animatable.Text>
-          ) : (
-            <View style={styles.scrollContainer}>
-              <ScrollView 
-                style={styles.optionsList}
-                showsVerticalScrollIndicator={false}
-              >
-                <Animatable.View animation="fadeInUp" delay={200}>
-                  <List.Section>
-                    {options.map((option) => (
-                      <List.Item
-                        key={option.id}
-                        title={option.text}
-                        titleStyle={styles.optionText}
-                        right={() => (
-                          <IconButton
-                            icon="close-circle-outline"
-                            size={22}
-                            onPress={() => handleRemoveOption(option.id)}
-                            iconColor="#808080"
-                          />
-                        )}
-                      />
-                    ))}
-                  </List.Section>
-                </Animatable.View>
-              </ScrollView>
-              {options.length > 2 && (
-                <Animatable.View 
-                  animation="fadeIn"
-                  iterationCount="infinite"
-                  direction="alternate"
-                  style={styles.scrollIndicator}
-                >
-                  <Text style={styles.scrollIndicatorText}>↓ Scroll ↓</Text>
-                </Animatable.View>
-              )}
-            </View>
+      <View style={styles.optionsHeader}>
+        <Text style={styles.sectionTitle}>Your Options</Text>
+        <View style={styles.headerButtons}>
+          <Button
+            mode="outlined"
+            onPress={() => setShowCategories(true)}
+            style={{ marginRight: 8 }}
+            icon="format-list-bulleted"
+          >
+            Categories
+          </Button>
+          {options.length > 0 && (
+            <Button
+              mode="text"
+              onPress={() => setOptions([])}
+              icon="delete-outline"
+              compact
+              textColor="#ff7f50"
+            >
+              Clear All
+            </Button>
           )}
         </View>
+      </View>
 
-        {/* Spinning Wheel */}
-        {options.length >= 2 && (
-          <Animatable.View animation="fadeIn" style={styles.wheelContainer}>
-            <Text style={styles.clickToSpinText}>
-              {isSpinning ? "Spinning..." : "Click the wheel to spin!"}
-            </Text>
-            <SpinningWheel
-              options={options.map((opt) => opt.text)}
-              onSpinComplete={handleSpinComplete}
-              spinning={isSpinning}
-              setSpinning={setIsSpinning}
-              onSpinStart={handleSpin}
-            />
+      {options.length === 0 ? (
+        <Animatable.Text animation="fadeIn" style={styles.emptyOptionsText}>
+          No options added yet.
+        </Animatable.Text>
+      ) : (
+        <View style={styles.scrollContainer}>
+          <ScrollView 
+            style={styles.optionsList}
+            showsVerticalScrollIndicator={false}
+          >
+            <Animatable.View animation="fadeInUp" delay={200}>
+              <List.Section>
+                {options.map((option) => (
+                  <List.Item
+                    key={option.id}
+                    title={option.text}
+                    titleStyle={styles.optionText}
+                    right={() => (
+                      <IconButton
+                        icon="close-circle-outline"
+                        size={22}
+                        onPress={() => handleRemoveOption(option.id)}
+                        iconColor="#808080"
+                      />
+                    )}
+                  />
+                ))}
+              </List.Section>
+            </Animatable.View>
+          </ScrollView>
+          
+          <Animatable.View 
+            animation="fadeIn"
+            iterationCount="infinite"
+            direction="alternate"
+            style={styles.scrollIndicator}
+          >
+            <Text style={styles.scrollIndicatorText}>↓ Scroll ↓</Text>
           </Animatable.View>
-        )}
+        </View>
+      )}
 
-        {/* Result Modal */}
+      {options.length >= 2 && (
+        <Animatable.View animation="fadeIn" style={styles.wheelContainer}>
+          <Text style={styles.clickToSpinText}>
+            {isSpinning ? "Spinning..." : "Click the wheel to spin!"}
+          </Text>
+          <SpinningWheel
+            options={options.map((opt) => opt.text)}
+            onSpinComplete={handleSpinComplete}
+            spinning={isSpinning}
+            setSpinning={setIsSpinning}
+            onSpinStart={handleSpin}
+          />
+        </Animatable.View>
+      )}
+
       <Modal
         visible={showResult}
         transparent={true}
@@ -216,6 +235,26 @@ export default function DecisionMaker() {
               </Button>
             </View>
           </Animatable.View>
+        </View>
+      </Modal>
+
+      <Modal
+        visible={showCategories}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowCategories(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalContent, { height: '80%' }]}>
+            <CategoryManager onSelectCategory={handleCategorySelect} />
+            <Button
+              mode="contained"
+              onPress={() => setShowCategories(false)}
+              style={styles.modalButton}
+            >
+              Close
+            </Button>
+          </View>
         </View>
       </Modal>
     </View>

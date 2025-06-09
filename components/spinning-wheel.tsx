@@ -1,8 +1,8 @@
 //spinning-wheel.tsx
 "use client"
 
-import { useRef, useEffect } from "react"
-import { View, StyleSheet, Animated, Easing, Dimensions, TouchableWithoutFeedback } from "react-native"
+import { useEffect, useRef } from "react"
+import { Animated, Dimensions, Easing, Pressable, StyleSheet, View } from "react-native"
 import Svg, { G, Path, Text as SvgText } from "react-native-svg"
 
 const { width } = Dimensions.get("window")
@@ -129,7 +129,13 @@ export default function SpinningWheel({
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() => !spinning && onSpinStart()}>
+    <Pressable 
+      onPress={() => !spinning && onSpinStart()}
+      style={({ pressed }) => [
+        styles.container,
+        pressed && { opacity: 0.8 }
+      ]}
+    >
       <View style={styles.container}>
         <Animated.View
           style={[
@@ -154,7 +160,7 @@ export default function SpinningWheel({
         {/* Triangle pointer - positioned at the top */}
         <View style={styles.pointer} />
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   )
 }
 
