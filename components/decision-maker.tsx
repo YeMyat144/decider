@@ -63,7 +63,7 @@ export default function DecisionMaker() {
 
   const handleShare = async () => {
     try {
-      const message = `The Decider chose: ${selectedOption} 🍥`
+      const message = `I spun 🍥 and got ${selectedOption}! Try it: https://expo.dev/artifacts/eas/buYbKtWNYgzPBqBzJbPiDB.aab`
       await Share.share({
         message,
         title: 'My Decision from The Decider',
@@ -123,7 +123,6 @@ export default function DecisionMaker() {
         <Text style={styles.sectionTitle}>Your Options</Text>
         <View style={styles.headerButtons}>
           <Button
-            mode="outlined"
             onPress={() => setShowCategories(true)}
             style={{ marginRight: 8 }}
             icon="format-list-bulleted"
@@ -132,13 +131,12 @@ export default function DecisionMaker() {
           </Button>
           {options.length > 0 && (
             <Button
-              mode="text"
               onPress={() => setOptions([])}
-              icon="delete-outline"
+              icon="delete"
               compact
               textColor="#ff7f50"
             >
-              Clear All
+              {""}
             </Button>
           )}
         </View>
