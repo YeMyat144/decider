@@ -344,7 +344,7 @@ export default function CategoryManager({ onSelectCategory }: CategoryManagerPro
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Choose a Category</Text>
+        <Text style={styles.title}>Choose Category</Text>
         <Button 
           mode="contained" 
           onPress={() => setShowAddCategory(true)}
@@ -407,15 +407,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: 18,
-    marginBottom: 16,
+    marginBottom: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#008080',
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#1E293B',
+    letterSpacing: -0.5,
   },
   addButton: {
     backgroundColor: '#008080',
+    borderRadius: 12,
   },
   scrollView: {
     flex: 1,
@@ -424,6 +426,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     elevation: 2,
     backgroundColor: 'white',
+    borderRadius: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
   },
   cardHeader: {
     flexDirection: 'row',
@@ -432,55 +442,67 @@ const styles = StyleSheet.create({
   },
   cardActions: {
     flexDirection: 'row',
+    gap: 4,
   },
   categoryName: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#008080',
+    fontWeight: '700',
+    color: '#1E293B',
   },
   optionCount: {
-    color: '#666',
+    color: '#64748B',
     marginTop: 4,
     fontSize: 14,
+    fontWeight: '500',
   },
   useButton: {
     backgroundColor: '#008080',
     marginRight: 8,
+    borderRadius: 12,
   },
   editContainer: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#fff',
+    padding: 10,
   },
   editHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
   },
   editTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#008080',
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#1E293B',
+    letterSpacing: -0.5,
   },
   sectionContainer: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   sectionTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#008080',
+    fontWeight: '700',
+    marginBottom: 12,
+    color: '#1E293B',
   },
   input: {
     backgroundColor: 'white',
     marginTop: 12,
+    borderRadius: 12,
   },
   optionsScrollView: {
     maxHeight: 200,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
-    paddingHorizontal: 12,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
   },
   optionRow: {
     flexDirection: 'row',
@@ -488,11 +510,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#E2E8F0',
   },
   optionText: {
     fontSize: 16,
     flex: 1,
+    color: '#1E293B',
+    fontWeight: '500',
   },
   optionDeleteButton: {
     margin: 0,
@@ -511,6 +535,8 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   actionButton: {
-    minWidth: 100,
+    minWidth: 120,
+    borderRadius: 12,
+    borderColor: '#E2E8F0',
   },
 });

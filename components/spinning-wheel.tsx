@@ -157,7 +157,6 @@ export default function SpinningWheel({
           </Svg>
         </Animated.View>
 
-        {/* Triangle pointer - positioned at the top */}
         <View style={styles.pointer} />
       </View>
     </Pressable>

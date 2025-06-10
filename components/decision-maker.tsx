@@ -210,9 +210,6 @@ export default function DecisionMaker() {
 
       {options.length >= 2 && (
         <Animatable.View animation="fadeIn" style={styles.wheelContainer}>
-          <Text style={styles.clickToSpinText}>
-            {isSpinning ? "Spinning..." : "Click the wheel to spin!"}
-          </Text>
           <SpinningWheel
             options={options.map((opt) => opt.text)}
             onSpinComplete={handleSpinComplete}

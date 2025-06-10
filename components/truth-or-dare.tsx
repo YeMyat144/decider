@@ -10,11 +10,6 @@ const TRUTH_QUESTIONS = [
   "What's the biggest lie you've ever told?",
   "What's your biggest fear?",
   "What's the most trouble you've ever been in?",
-  "What's your biggest insecurity?",
-  "What's the worst date you've ever been on?",
-  "What's your biggest secret?",
-  "What's the most money you've ever spent on something silly?",
-  "What's your biggest pet peeve?",
 ]
 
 const DARE_QUESTIONS = [
@@ -23,11 +18,6 @@ const DARE_QUESTIONS = [
   "Call your mom and tell her you're getting married",
   "Let someone in the group go through your phone for 1 minute",
   "Do 10 push-ups right now",
-  "Let someone in the group give you a makeover",
-  "Sing your favorite song at the top of your lungs",
-  "Let someone in the group post a status on your social media",
-  "Do your best impression of someone in the group",
-  "Let the group choose your profile picture for the next week",
 ]
 
 export default function TruthOrDare() {
@@ -96,18 +86,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "rgba(245, 245, 245, 0.8)",
+    backdropFilter: "blur(10px)",
   },
   title: {
     fontSize: 32,
     fontWeight: "bold",
     marginBottom: 20,
     color: "#333",
+    textShadowColor: "rgba(0, 0, 0, 0.1)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
   questionContainer: {
-    backgroundColor: "white",
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 16,
     marginTop: 20,
     width: "100%",
     shadowColor: "#000",
@@ -115,9 +109,11 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
     elevation: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   questionLabel: {
     fontSize: 24,
@@ -131,11 +127,21 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   spinButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "rgba(76, 175, 80, 0.8)",
     paddingHorizontal: 30,
     paddingVertical: 15,
     borderRadius: 25,
     marginTop: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   spinButtonPressed: {
     opacity: 0.8,
