@@ -24,6 +24,24 @@ const DEFAULT_CATEGORIES: Category[] = [
     id: '3',
     name: 'What to do in spare time',
     options: ['Play badminton', 'Watch movies', 'Read books', 'Play games', 'Go for a walk', 'Exercise', 'Cook', 'Sleep']
+  },
+  {
+    id: '4',
+    name: 'Truth or Dare',
+    options: [
+      'Truth: What is your biggest fear?',
+      'Truth: What is your most embarrassing moment?',
+      'Truth: What is your biggest regret?',
+      'Truth: What is your biggest secret?',
+      'Truth: What is your biggest dream?',
+      'Dare: Do your best dance move',
+      'Dare: Sing a song out loud',
+      'Dare: Call a friend and tell them you love them',
+      'Dare: Do 10 push-ups',
+      'Dare: Let someone post anything they want on your social media',
+      'Dare: Let the group give you a makeover',
+      'Dare: Let someone tickle you for 30 seconds'
+    ]
   }
 ];
 
@@ -179,24 +197,6 @@ export default function CategoryManager({ onSelectCategory }: CategoryManagerPro
       </View>
 
       <View style={styles.sectionContainer}>
-        <View style={styles.addOptionRow}>
-          <TextInput
-            label="Add New Option"
-            value={newOption}
-            onChangeText={setNewOption}
-            style={styles.flexInput}
-            mode="outlined"
-          />
-          <IconButton
-            icon="plus-circle"
-            onPress={handleAddOption}
-            disabled={!newOption.trim()}
-            size={30}
-            iconColor="#ff7f50"
-          />
-        </View>
-      </View>
-
       <View style={styles.actionButtons}>
         <Button
           mode="outlined"
@@ -216,6 +216,24 @@ export default function CategoryManager({ onSelectCategory }: CategoryManagerPro
           Save
         </Button>
       </View>
+      </View>
+              <View style={styles.addOptionRow}>
+          <TextInput
+            label="Add New Option"
+            value={newOption}
+            onChangeText={setNewOption}
+            style={styles.flexInput}
+            mode="outlined"
+          />
+          <IconButton
+            icon="plus-circle"
+            onPress={handleAddOption}
+            disabled={!newOption.trim()}
+            size={30}
+            iconColor="#ff7f50"
+          />
+        </View>
+
       <View style={styles.sectionContainer}>
         <TextInput
           value={editingCategory?.name || ''}
@@ -261,25 +279,7 @@ export default function CategoryManager({ onSelectCategory }: CategoryManagerPro
         </ScrollView>
       </View>
 
-      <View style={styles.sectionContainer}>
-        <View style={styles.addOptionRow}>
-          <TextInput
-            label="Add New Option"
-            value={newOption}
-            onChangeText={setNewOption}
-            style={styles.flexInput}
-            mode="outlined"
-          />
-          <IconButton
-            icon="plus-circle"
-            onPress={handleAddNewOption}
-            disabled={!newOption.trim()}
-            size={30}
-            iconColor="#ff7f50"
-          />
-        </View>
-      </View>
-
+    <View style={styles.sectionContainer}>
       <View style={styles.actionButtons}>
         <Button
           mode="outlined"
@@ -301,6 +301,24 @@ export default function CategoryManager({ onSelectCategory }: CategoryManagerPro
           Save
         </Button>
       </View>
+    </View>
+
+        <View style={styles.addOptionRow}>
+          <TextInput
+            label="Add New Option"
+            value={newOption}
+            onChangeText={setNewOption}
+            style={styles.flexInput}
+            mode="outlined"
+          />
+          <IconButton
+            icon="plus-circle"
+            onPress={handleAddNewOption}
+            disabled={!newOption.trim()}
+            size={30}
+            iconColor="#ff7f50"
+          />
+        </View>
 
       <View style={styles.sectionContainer}>
         <TextInput

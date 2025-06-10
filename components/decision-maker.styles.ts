@@ -172,4 +172,21 @@ export const styles = StyleSheet.create({
     margin: 4,
     borderRadius: 18,
   },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  modalScrollView: {
+    flex: 1,
+    width: '100%',
+    padding: 16,
+  },
+  truthDareButtons: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
 })

@@ -14,11 +14,27 @@ type Option = {
   text: string
 }
 
+const TRUTH_OR_DARE_OPTIONS = [
+  'Truth: What is your biggest fear?',
+  'Truth: What is your most embarrassing moment?',
+  'Truth: What is your biggest regret?',
+  'Truth: What is your biggest secret?',
+  'Truth: What is your biggest dream?',
+  'Dare: Do your best dance move',
+  'Dare: Sing a song out loud',
+  'Dare: Call a friend and tell them you love them',
+  'Dare: Do 10 push-ups',
+  'Dare: Let someone post anything they want on your social media',
+  'Dare: Let the group give you a makeover',
+  'Dare: Let someone tickle you for 30 seconds'
+];
+
 export default function DecisionMaker() {
   // Option state
   const [options, setOptions] = useState<Option[]>([])
   const [newOption, setNewOption] = useState("")
   const [showCategories, setShowCategories] = useState(false)
+  const [showTruthOrDare, setShowTruthOrDare] = useState(false)
 
   // Decision state
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
@@ -96,7 +112,17 @@ export default function DecisionMaker() {
       )}
 
       <Animatable.Text animation="fadeInDown" style={styles.appTitle}>
-        🍥 The Decider
+        🍥 <Text 
+          onPress={() => {
+            handleCategorySelect({ options: TRUTH_OR_DARE_OPTIONS });
+          }}
+          style={[styles.appTitle, { color: '#ff7f50' }]}
+        >T</Text>he <Text 
+          onPress={() => {
+            handleCategorySelect({ options: TRUTH_OR_DARE_OPTIONS });
+          }}
+          style={[styles.appTitle, { color: '#ff7f50' }]}
+        >D</Text>ecider
       </Animatable.Text>
 
       <Animatable.View animation="fadeInUp" duration={500}>
@@ -120,8 +146,6 @@ export default function DecisionMaker() {
       </Animatable.View>
 
       <View style={styles.optionsHeader}>
-        <Text style={styles.sectionTitle}>Your Options</Text>
-        <View style={styles.headerButtons}>
           <Button
             onPress={() => setShowCategories(true)}
             style={{ marginRight: 8 }}
@@ -139,7 +163,7 @@ export default function DecisionMaker() {
               {""}
             </Button>
           )}
-        </View>
+
       </View>
 
       {options.length === 0 ? (
@@ -252,6 +276,38 @@ export default function DecisionMaker() {
             >
               Close
             </Button>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        visible={showTruthOrDare}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowTruthOrDare(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalContent, { height: '80%' }]}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Truth or Dare</Text>
+              <IconButton
+                icon="close"
+                size={24}
+                onPress={() => setShowTruthOrDare(false)}
+              />
+            </View>
+            <ScrollView style={styles.modalScrollView}>
+              <Button
+                mode="contained"
+                onPress={() => {
+                  handleCategorySelect({ options: TRUTH_OR_DARE_OPTIONS });
+                }}
+                style={styles.modalButton}
+                icon="gamepad-variant"
+              >
+                Use Truth or Dare Wheel
+              </Button>
+            </ScrollView>
           </View>
         </View>
       </Modal>
