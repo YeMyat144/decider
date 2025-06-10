@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, View, Alert } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Card, IconButton, Text, TextInput } from 'react-native-paper';
 
 interface Category {
@@ -38,6 +38,7 @@ export default function CategoryManager({ onSelectCategory }: CategoryManagerPro
   const [newOption, setNewOption] = useState('');
   const [newCategoryName, setNewCategoryName] = useState('');
   const [showAddCategory, setShowAddCategory] = useState(false);
+  const [newCategoryOptions, setNewCategoryOptions] = useState<string[]>([]);
 
   // Load saved categories on startup
   React.useEffect(() => {
@@ -68,18 +69,29 @@ export default function CategoryManager({ onSelectCategory }: CategoryManagerPro
     }
   };
 
+  const handleAddNewOption = () => {
+    if (!newOption.trim()) return;
+    setNewCategoryOptions([...newCategoryOptions, newOption.trim()]);
+    setNewOption('');
+  };
+
+  const handleRemoveNewOption = (optionToRemove: string) => {
+    setNewCategoryOptions(newCategoryOptions.filter(opt => opt !== optionToRemove));
+  };
+
   const handleAddCategory = async () => {
     if (!newCategoryName.trim()) return;
     
     const newCategory: Category = {
       id: Date.now().toString(),
       name: newCategoryName.trim(),
-      options: []
+      options: newCategoryOptions
     };
 
     const updatedCategories = [...categories, newCategory];
     setCategories(updatedCategories);
     setNewCategoryName('');
+    setNewCategoryOptions([]);
     setShowAddCategory(false);
     
     try {
@@ -149,18 +161,6 @@ export default function CategoryManager({ onSelectCategory }: CategoryManagerPro
         />
       </View>
 
-      {/* <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Category Name</Text>
-        <TextInput
-          value={editingCategory?.name || ''}
-          onChangeText={(text) => 
-            editingCategory && setEditingCategory({ ...editingCategory, name: text })
-          }
-          mode="outlined"
-          style={styles.input}
-        />
-      </View> */}
-
       <View style={styles.sectionContainer}>
         <Text style={styles.sectionTitle}>Options:</Text>
         <ScrollView style={styles.optionsScrollView}>
@@ -216,6 +216,16 @@ export default function CategoryManager({ onSelectCategory }: CategoryManagerPro
           Save
         </Button>
       </View>
+      <View style={styles.sectionContainer}>
+        <TextInput
+          value={editingCategory?.name || ''}
+          onChangeText={(text) => 
+            editingCategory && setEditingCategory({ ...editingCategory, name: text })
+          }
+          mode="outlined"
+          style={styles.input}
+        />
+      </View>
     </View>
   );
 
@@ -226,24 +236,58 @@ export default function CategoryManager({ onSelectCategory }: CategoryManagerPro
         <IconButton
           icon="close"
           size={24}
-          onPress={() => setShowAddCategory(false)}
+          onPress={() => {
+            setShowAddCategory(false);
+            setNewCategoryName('');
+            setNewCategoryOptions([]);
+          }}
         />
       </View>
 
-      {/* <View style={styles.sectionContainer}>
-        <TextInput
-          label="Category Name"
-          value={newCategoryName}
-          onChangeText={setNewCategoryName}
-          mode="outlined"
-          style={styles.input}
-        />
-      </View> */}
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Options:</Text>
+        <ScrollView style={styles.optionsScrollView}>
+          {newCategoryOptions.map((option, index) => (
+            <View key={index} style={styles.optionRow}>
+              <Text style={styles.optionText}>{option}</Text>
+              <IconButton
+                icon="close"
+                size={20}
+                onPress={() => handleRemoveNewOption(option)}
+                style={styles.optionDeleteButton}
+              />
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+
+      <View style={styles.sectionContainer}>
+        <View style={styles.addOptionRow}>
+          <TextInput
+            label="Add New Option"
+            value={newOption}
+            onChangeText={setNewOption}
+            style={styles.flexInput}
+            mode="outlined"
+          />
+          <IconButton
+            icon="plus-circle"
+            onPress={handleAddNewOption}
+            disabled={!newOption.trim()}
+            size={30}
+            iconColor="#ff7f50"
+          />
+        </View>
+      </View>
 
       <View style={styles.actionButtons}>
         <Button
           mode="outlined"
-          onPress={() => setShowAddCategory(false)}
+          onPress={() => {
+            setShowAddCategory(false);
+            setNewCategoryName('');
+            setNewCategoryOptions([]);
+          }}
           style={styles.actionButton}
         >
           Cancel
@@ -254,9 +298,20 @@ export default function CategoryManager({ onSelectCategory }: CategoryManagerPro
           style={styles.actionButton}
           disabled={!newCategoryName.trim()}
         >
-          Add
+          Save
         </Button>
       </View>
+
+      <View style={styles.sectionContainer}>
+        <TextInput
+          label="Category Name"
+          value={newCategoryName}
+          onChangeText={setNewCategoryName}
+          mode="outlined"
+          style={styles.input}
+        />
+      </View>
+      
     </View>
   );
 
@@ -401,6 +456,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: 'white',
+    marginTop: 12,
   },
   optionsScrollView: {
     maxHeight: 200,

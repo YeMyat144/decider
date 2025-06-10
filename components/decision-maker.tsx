@@ -127,7 +127,7 @@ export default function DecisionMaker() {
             style={{ marginRight: 8 }}
             icon="format-list-bulleted"
           >
-            Categories
+            Category
           </Button>
           {options.length > 0 && (
             <Button
